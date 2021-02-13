@@ -13,7 +13,8 @@ class PricingAuctions(gym.Env):
     Parse the config file to read the data path
     """
     env_dir = os.path.dirname(__file__)
-    self.data_src= env_dir + '/sampledata.csv'
+    #self.data_src= env_dir + '/sampledata.csv'
+    self.data_src='/content/DynamicPricing/data/bidding_prices_test.csv'
 
   def __init__(self):
     """
