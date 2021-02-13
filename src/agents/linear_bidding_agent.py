@@ -27,7 +27,7 @@ class LinearBiddingAgent():
 
     self.budget_spend += (cost / 1e9)
 
-    action = min(state['customer_sensitivity'] * action, action)
+    #action = min(state['customer_sensitivity'] * action, action)
     return action
 
   def done(self):
