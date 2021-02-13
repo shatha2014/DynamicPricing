@@ -38,7 +38,7 @@ class PricingAuctions(gym.Env):
              'customer_acceptedprice',
              'auction_type'
     ]
-    self.bid_requests = pd.read_csv(self.data_src, sep=",", usecols=fields)
+    self.bid_requests = pd.read_csv(self.data_src, sep=",")
     self.total_bids = len(self.bid_requests)
 
   def _get_observation(self, bid_req):
