@@ -1,1 +1,1 @@
-C170;111;2016;319;371;5961;67;1858;301897196;11080538;1;11077538;FIRSTPRICEC8;112;2017;319;462;4498;80;2007;3407475359;9028486;2;9027986;FIRSTPRICE
+customer_id;order_id;orderentry_date;customer_requestedLT;confirmed_orderLT_A;order_quantity;product_id;sales_product;order_importance;bidprice_A;customer_sensitivity;customer_acceptedprice;auction_typeC170;111;2016;319;371;5961;67;1858;301897196;11080538;1;11077538;FIRSTPRICEC8;112;2017;319;462;4498;80;2007;3407475359;9028486;2;9027986;FIRSTPRICE
