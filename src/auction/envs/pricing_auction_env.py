@@ -101,7 +101,8 @@ class PricingAuctions(gym.Env):
     c = 0.0 # cost of the bid price
 
     #r = self.customer_sensitivity
-    r= random.uniform(0.2,0.9)
+    #r= random.uniform(0.2,0.9)
+    r = random.uniform(0.2,0.3)
     c = action
 
     next_bid = None
