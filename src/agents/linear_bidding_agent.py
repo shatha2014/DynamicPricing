@@ -18,9 +18,11 @@ class LinearBiddingAgent():
 
   def act(self,state,reward, cost):
     # decide how the episode will be done
-    action = state['sales_product'] + 10
+    # simply strategy -- 10% increase on price
+    val = state['sales_product'] * state['order_quantity']
+    action = val + val * 0.10
 
-    if  cost > 0:
+    if reward > 0.5:
       self.wins_e += 1
       self.total_wins += 1
       self.total_rewards += 1

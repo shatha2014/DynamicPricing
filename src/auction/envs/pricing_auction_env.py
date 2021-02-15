@@ -4,6 +4,7 @@ from gym.utils import seeding
 import os
 import pandas as pd
 import configparser
+import random
 class PricingAuctions(gym.Env):
   """
   Add Description
@@ -14,7 +15,7 @@ class PricingAuctions(gym.Env):
     """
     env_dir = os.path.dirname(__file__)
     #self.data_src= env_dir + '/sampledata.csv'
-    self.data_src='/content/DynamicPricing/data/bidding_prices_test.csv'
+    self.data_src='/content/QSD Customer Segmentation v03.xlsx'
 
   def __init__(self):
     """
@@ -38,7 +39,15 @@ class PricingAuctions(gym.Env):
              'customer_acceptedprice',
              'auction_type'
     ]
-    self.bid_requests = pd.read_csv(self.data_src, sep=";")
+    # use datetime for the date fields, there is a column of Agreed Liability (in w) that i ignored currently
+    df = pd.read_excel('/content/QSD Customer Segmentation v03.xlsx' ,header=0, converters= { 'PL': str, 'Customer': str, 'Order Number': str, 'Order Entry Date':str, 'Customer Wish Date':str, 'Confirmed Delivery Date':str, 'Requested Order Lead Time (in d)':float, 'Confirmed Order Lead Time (in d)':float, 'Order quantity': float, 'Product Information': str, 'Sales product': lambda s: float(s.replace('S', '')), 'Importance of order in €': float})
+    df.rename(columns={'Customer': 'customer_id', 'Order Number': 'order_id', 'Order Entry Date':'orderentry_date',
+                                      'Customer Wish Date': 'customer_wish_date', 'Confirmed Delivery Date':'confirmed_delivery_date',
+                                      'Requested Order Lead Time (in d)':'customer_requestedLT', 'Confirmed Order Lead Time (in d)': 'confirmed_orderLT_A',
+                                      'Order quantity': 'order_quantity', 'Product Information ':'product_id', 'Sales product':'sales_product',
+                                      'Importance of order in €': 'order_importance'}, inplace=True)
+    #temporary
+    self.bid_requests = df[df['customer_id'] == 'C158']
     self.total_bids = len(self.bid_requests)
 
   def _get_observation(self, bid_req):
@@ -57,17 +66,18 @@ class PricingAuctions(gym.Env):
       observation['order_quantity'] = bid_req['order_quantity']
       observation['product_id'] = bid_req['product_id']
       observation['sales_product'] = bid_req['sales_product']
-      observation['auction_type' ] = bid_req['auction_type']
+      #observation['auction_type' ] = bid_req['auction_type']
     return observation
 
   def _bid_state(self, bid_req):
     """
     add description
     """
-    self.auction_type = bid_req['auction_type']
-    self.bidprice_A = bid_req['bidprice_A']
-    self.customer_acceptedprice = bid_req['customer_acceptedprice']
-    self.customer_sensitivity = bid_req['customer_sensitivity']
+    #self.auction_type = bid_req['auction_type']
+    val = bid_req['sales_product'] * bid_req['order_quantity']
+    self.bidprice_A = val + val * 0.10
+    #self.customer_acceptedprice = bid_req['customer_acceptedprice']
+    #self.customer_sensitivity = bid_req['customer_sensitivity']
     self.order_importance = bid_req['order_importance']
 
   def reset(self):
@@ -90,7 +100,8 @@ class PricingAuctions(gym.Env):
     r = 0.0 #immediate reward
     c = 0.0 # cost of the bid price
 
-    r = self.customer_sensitivity
+    #r = self.customer_sensitivity
+    r= random.range(0.2,0.9)
     c = action
 
     next_bid = None
