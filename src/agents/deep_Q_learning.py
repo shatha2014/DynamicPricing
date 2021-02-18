@@ -1,5 +1,7 @@
 # Adapted from:
 # https://github.com/venkatacrc/Budget_Constrained_Bidding/
+# which was originally from:
+# https://github.com/udacity/deep-reinforcement-learning/blob/master/solution/dqn_agent.py
 
 import numpy as np
 import random
