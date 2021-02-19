@@ -8,7 +8,7 @@ import random
 from collections import namedtuple, deque
 
 
-from model import Network
+from DynamicPricing.src.agents.model import Network
 
 import torch
 import torch.nn.functional as F
