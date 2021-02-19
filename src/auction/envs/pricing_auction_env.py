@@ -32,11 +32,11 @@ class PricingAuctions(gym.Env):
                                       'Order quantity': 'order_quantity', 'Product Information ':'product_id', 'Sales product':'sales_product',
                                       'Importance of order in €': 'order_importance'}, inplace=True)
     #temporary
-    df['customer_sensitivity'] = 0.0
+    df['customer_sensitivity'] = 0.2
     df['bid_price_rl'] = 0.0
     df['customer_accepted_price'] = 0.0
     df['auction_type'] = 'FIRST_PRICE'
-    df[df['customer_id'] == 'C158']['customer_sensitivity'] = 0.2
+    df[df['customer_id'] == 'C158']['customer_sensitivity'] = 0.2 #TODO
     self.bid_requests = df[df['customer_id'] == 'C158']
     self.total_bids = len(self.bid_requests)
 
