@@ -10,8 +10,8 @@ from collections import deque
 import matplotlib.pyplot as plt
 
 import configparser
-from deep_Q_learning import Agent
-from reward_net import RewardNet
+from DynamicPricing.src.agents.deep_Q_learning import Agent
+from DynamicPricing.src.agents.reward_net import RewardNet
 
 
 class RlBidAgent():
