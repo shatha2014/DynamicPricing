@@ -66,7 +66,7 @@ class RlBidAgent():
         self.customer_wish_date = None
         self.confirmed_delivery_date = None
         self.customer_requestedLT =0
-        self.confirmed_orderLT_A = 0
+        self.confirmed_orderLT = 0
         self.order_quantity = 0
         self.product_id = 0
         self.sales_product = 0.0
@@ -131,7 +131,7 @@ class RlBidAgent():
                             state['orderentry_date'],
                             state['confirmed_delivery_date'],
                             state['customer_requestedLT'],
-                            state['confirmed_orderLT_A'],
+                            state['confirmed_orderLT'],
                             state['order_quantity'],
                             state['sales_product'],
                             state['order_importance'],
