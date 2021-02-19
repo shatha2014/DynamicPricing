@@ -1,6 +1,8 @@
 import sys, os
-sys.path.append(os.getcwd() +'/src/auction')
-import gym, auction
+#sys.path.append(os.getcwd() +'/src/auction')
+import gym
+#from DynamicPricing.src.auction.envs.pricing_auction_env import PricingAuctions
+
 import random
 import torch
 import numpy as np
@@ -57,6 +59,19 @@ class RlBidAgent():
         self.total_wins = 0
         self.total_rewards = 0.0
         self.bid_count = 0 #TODO -- for episode done
+
+        self.customer_id = 0
+        self.order_id = 0
+        self.orderentry_date = None
+        self.customer_wish_date = None
+        self.confirmed_delivery_date = None
+        self.customer_requestedLT =0
+        self.confirmed_orderLT_A = 0
+        self.order_quantity = 0
+        self.product_id = 0
+        self.sales_product = 0.0
+        self.order_importance = 0.0
+        self.customer_sensitivity = 0.0
 
 
     def _reset_episode(self):
