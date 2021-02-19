@@ -54,7 +54,7 @@ class PricingAuctions(gym.Env):
       observation['customer_wish_date'] = bid_req['customer_wish_date']
       observation['confirmed_delivery_date'] = bid_req['confirmed_delivery_date']
       observation['customer_requestedLT'] = bid_req['customer_requestedLT']
-      observation['confirmed_orderLT_A'] = bid_req['confirmed_orderLT_A']
+      observation['confirmed_orderLT'] = bid_req['confirmed_orderLT']
       observation['order_quantity'] = bid_req['order_quantity']
       observation['product_id'] = bid_req['product_id']
       observation['sales_product'] = bid_req['sales_product']
