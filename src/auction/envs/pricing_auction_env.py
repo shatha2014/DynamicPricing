@@ -24,29 +24,19 @@ class PricingAuctions(gym.Env):
     self._load_config()
     self._step = 1
     #TODO: Refactor, read them from config as a list then a loop to populate them in the observation
-    fields =[
-             'customer_id',
-             'order_id',
-             'orderentry_date',
-             'customer_requestedLT',
-             'confirmed_orderLT_A',
-             'order_quantity',
-             'product_id',
-             'sales_product',
-             'order_importance',
-             'bidprice_A',
-             'customer_sensitivity',
-             'customer_acceptedprice',
-             'auction_type'
-    ]
     # use datetime for the date fields, there is a column of Agreed Liability (in w) that i ignored currently
     df = pd.read_excel('/content/QSD Customer Segmentation v03.xlsx' ,header=0, converters= { 'PL': str, 'Customer': str, 'Order Number': str, 'Order Entry Date':str, 'Customer Wish Date':str, 'Confirmed Delivery Date':str, 'Requested Order Lead Time (in d)':float, 'Confirmed Order Lead Time (in d)':float, 'Order quantity': float, 'Product Information': str, 'Sales product': lambda s: float(s.replace('S', '')), 'Importance of order in €': float})
     df.rename(columns={'Customer': 'customer_id', 'Order Number': 'order_id', 'Order Entry Date':'orderentry_date',
                                       'Customer Wish Date': 'customer_wish_date', 'Confirmed Delivery Date':'confirmed_delivery_date',
-                                      'Requested Order Lead Time (in d)':'customer_requestedLT', 'Confirmed Order Lead Time (in d)': 'confirmed_orderLT_A',
+                                      'Requested Order Lead Time (in d)':'customer_requestedLT', 'Confirmed Order Lead Time (in d)': 'confirmed_orderLT',
                                       'Order quantity': 'order_quantity', 'Product Information ':'product_id', 'Sales product':'sales_product',
                                       'Importance of order in €': 'order_importance'}, inplace=True)
     #temporary
+    df['customer_sensitivity'] = 0.0
+    df['bid_price_rl'] = 0.0
+    df['customer_accepted_price'] = 0.0
+    df['auction_type'] = 'FIRST_PRICE'
+    df[df['customer_id'] == 'C158']['customer_sensitivity'] = 0.2
     self.bid_requests = df[df['customer_id'] == 'C158']
     self.total_bids = len(self.bid_requests)
 
@@ -61,24 +51,25 @@ class PricingAuctions(gym.Env):
       observation['customer_id'] = bid_req['customer_id']
       observation['order_id'] = bid_req['order_id']
       observation['orderentry_date'] = bid_req['orderentry_date']
+      observation['customer_wish_date'] = bid_req['customer_wish_date']
+      observation['confirmed_delivery_date'] = bid_req['confirmed_delivery_date']
       observation['customer_requestedLT'] = bid_req['customer_requestedLT']
       observation['confirmed_orderLT_A'] = bid_req['confirmed_orderLT_A']
       observation['order_quantity'] = bid_req['order_quantity']
       observation['product_id'] = bid_req['product_id']
       observation['sales_product'] = bid_req['sales_product']
-      #observation['auction_type' ] = bid_req['auction_type']
+      observation['order_importance'] = bid_req['order_importance']
+      observation['customer_sensitivity'] = bid_req['customer_sensitivity']
     return observation
 
   def _bid_state(self, bid_req):
     """
     add description
     """
-    #self.auction_type = bid_req['auction_type']
-    val = bid_req['sales_product'] * bid_req['order_quantity']
-    self.bidprice_A = val + val * 0.10
-    #self.customer_acceptedprice = bid_req['customer_acceptedprice']
-    #self.customer_sensitivity = bid_req['customer_sensitivity']
-    self.order_importance = bid_req['order_importance']
+    self.auction_type = bid_req['auction_type']
+    self.bidprice_rl = bid_req['bid_price_rl']
+    self.customer_acceptedprice = bid_req['customer_accepted_price']
+    self.customer_sensitivity = bid_req['customer_sensitivity']
 
   def reset(self):
     """
@@ -102,7 +93,7 @@ class PricingAuctions(gym.Env):
 
     #r = self.customer_sensitivity
     #r= random.uniform(0.2,0.9)
-    r = random.uniform(0.2,0.3)
+    r = ((self.sales_product * self.order_quantity) + (self.customer_sensitivity * action)) - action
     c = action
 
     next_bid = None

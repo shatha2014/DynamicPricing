@@ -19,6 +19,17 @@ class RlBidAgent():
         # timesteps #TODO change value
         self.T = 24
         self.STATE_SIZE = 2 #tTODO
+        # State:
+        # Customer ID -- personlisation
+        # Total number of orders for this customer
+        # Original time of order
+        # Saved percentage
+        # Order quantity
+        # sales product
+        # order importance
+        # customer sensitivity
+        # past order performance -- toDO
+        self.STATE_SIZE = 8
         self.ACTION_SIZE = 2 #TODO
 
     def __init__(self):
@@ -32,10 +43,10 @@ class RlBidAgent():
 
         # DQN Network to learn Q function
         #TODO
-        self.dqn_agent = Agent(state_size = 2, action_size = 2, seed =0)
+        self.dqn_agent = Agent(state_size = 8, action_size = 2, seed =0)
         # Reward Network to reward function
         #TODO
-        self.reward_net = RewardNet(state_action_size = 2, reward_size = 1, seed =0 )
+        self.reward_net = RewardNet(state_action_size = 8, reward_size = 1, seed =0 )
         self.dqn_state = None
         self.dqn_action = 0 #TODO
         self.dqn_reward = 0
@@ -54,13 +65,13 @@ class RlBidAgent():
         """
         self.t_step = 0 #1. t: the current time step
         #TODO
-        self.customer_requestedLT = 0
-        self.confirmed_orderLT = 0
-        self.order_quantity = 0
-        self.sales_product = 0
-        self.order_importance = 0
-        self.customer_sensitivity = 0
-        self.customer_acceptance = 0 #TODO --> how many times the customer accepted proposal from this pricing agent
+        #self.customer_requestedLT = 0
+        #self.confirmed_orderLT = 0
+        #self.order_quantity = 0
+        #self.sales_product = 0
+        #self.order_importance = 0
+        #self.customer_sensitivity = 0
+        #self.customer_acceptance = 0 #TODO --> how many times the customer accepted proposal from this pricing agent
 
         self._reset_step()
         #TODO -- day and time
@@ -96,14 +107,21 @@ class RlBidAgent():
         self.bids_t += 1
         self.total_rewards += reward
 
-    def _get_state(self):
+    def _get_state(self,state):
         """
         Returns the state that will be used for the DQN state
         """
-        return np.asarray([self.t_step,
-                           self.proposed_price, #TODO
-                           self.customer_acceptance,
-                           self.reward_t
+        #self.t_step,self.proposed_price, #self.customer_acceptance,
+        return np.asarray([ state['customer_id'],
+                            state['orderentry_date'],
+                            state['confirmed_delivery_date'],
+                            state['customer_requestedLT'],
+                            state['confirmed_orderLT_A'],
+                            state['order_quantity'],
+                            state['sales_product'],
+                            state['order_importance'],
+                            state['customer_sensitivity'],
+                            self.reward_t
         ])
 
     def act(self, state, reward, cost):
@@ -122,7 +140,7 @@ class RlBidAgent():
             self._update_step() #TODO  assuming that each request is a step
             # sample a mini-batch and perform grad descent step
             self.reward_net.step()
-            dqn_next_state = self._get_state()
+            dqn_next_state = self._get_state(state)
             a_beta = self.dqn_agent.act(dqn_next_state, eps=self.eps) #TODO
             sa = np.append(self.dqn_state, self.dqn_action)
             rnet_r = float(self.reward_net.act(sa)) #state -- produce reward
@@ -154,7 +172,8 @@ class RlBidAgent():
         if cost > 0: #cost from previous step
             self.wins_e += 1
             self.wins_t += 1
-        action = 0 #TODO
+        # action - propose adjusted price or propose original price
+        action = self.dqn_action
         #TODO action space -- equal to the number of bids
         return action
 
