@@ -136,8 +136,7 @@ class RlBidAgent():
                             self.order_quantity,
                             self.sales_product,
                             self.order_importance,
-                            self.customer_sensitivity,
-                            self.reward_t
+                            self.customer_sensitivity
         ])
 
     def act(self, state, reward, cost):
