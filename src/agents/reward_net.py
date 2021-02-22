@@ -28,16 +28,22 @@ class RewardNet():
         """
         Initialise a RewardNet object
         """
+        print("reward 1")
         self.state_action_size = state_action_size
+        print("reward 2")
         self.reward_size = reward_size
+        print("reward 3")
         self.seed = random.seed(seed)
 
         #Reward Network
         self.reward_net =  Network(state_action_size, reward_size, seed).to(device)
+        print("reward 4")
         self.optimizer = optim.Adam(self.reward_net.parameters(),lr=LR)
+        print("reward 5")
 
         #Replay memory
         self.memory = ReplayBuffer(BUFFER_SIZE, BATCH_SIZE, seed)
+        print("reward 6")
         # initialise the time step for update every UPDATE_EVERY steps
         self.t_step  = 0
         # Reward dict
