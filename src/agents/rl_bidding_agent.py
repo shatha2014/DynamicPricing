@@ -37,9 +37,9 @@ class RlBidAgent():
         self.__load_config()
         # Control parameter used to scale bid price #TODO
         self.BETA = [0.1, 0.2,0.3, 0.4,0.5, 0.6, 0.7, 0.8, 0.9, 1.00]
-        self.eps_start = 0.1 #TODO
-        self.eps_end = 1.0 #TODO
-        self.anneal = 0.0 #TODO
+        self.eps_start = 0.95 #TODO
+        self.eps_end = 0.05 #TODO
+        self.anneal = 0.00005 #TODO
         self._reset_episode()
 
         # DQN Network to learn Q function
@@ -100,7 +100,7 @@ class RlBidAgent():
         """
         self.t_step += 1
         #TODO check the other fields
-        self.customer_acceptance  = self.wins_t / self.bids_t
+        self.customer_acceptance  = self.wins_t / self.bids_t #equivalent to WR
 
     def _reset_step(self):
         """
@@ -164,6 +164,7 @@ class RlBidAgent():
             self.dqn_state = dqn_next_state
             self.dqn_action = a_beta
             print(dqn_next_state, a_beta)
+            self.lambda_param = self.BETA[a_beta]
             #TODO
             self._reset_step()
             self._update_reward_cost(reward, cost)
@@ -184,16 +185,16 @@ class RlBidAgent():
         # action --> bid amount
         # Should be computed using a formula
         # Proposed price should be based on the original price, order size, order importance, customer sensitivity
-        if cost > 0: #cost from previous step
+        if reward > 0: #cost from previous step
             self.wins_e += 1
             self.wins_t += 1
         # action - propose adjusted price or propose original price
-        action = self.dqn_action * (self.sales_product * self.order_quantity) + self.sales_product * self.order_quantity
+        action = self.lambda_param * (self.sales_product * self.order_quantity) + self.sales_product * self.order_quantity
         #TODO action space -- equal to the number of bids
         return action
 
     def done(self):
-        return False #TODO decide how it is done
+        return self.bid_count < 7000 #TODO decide how it is done
 
 
 
