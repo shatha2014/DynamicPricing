@@ -47,7 +47,7 @@ class RlBidAgent():
         self.dqn_agent = Agent(state_size = 2, action_size = 10, seed =0)
         # Reward Network to reward function
         #TODO
-        self.reward_net = RewardNet(state_action_size = 10, reward_size = 1, seed =0 )
+        self.reward_net = RewardNet(state_action_size = 3, reward_size = 1, seed =0 )
         self.dqn_state = None
         self.dqn_action = 1 #TODO
         self.dqn_reward = 0
