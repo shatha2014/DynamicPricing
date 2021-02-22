@@ -167,7 +167,8 @@ class RlBidAgent():
             sa = np.append(self.dqn_state, self.dqn_action)
             #print("7")
             print("dqn state is {} and its shape is {}".format(self.dqn_state, self.dqn_state.shape))
-            print("dqn action is {} and its shape is {}".format(self.dqn_action, self.dqn_action.shape))
+            print("dqn action is {}".format(self.dqn_action))
+            print("sa is {}".format(sa))
             rnet_r = float(self.reward_net.act(sa)) #state -- produce reward
             print("8")
             # call agent step
