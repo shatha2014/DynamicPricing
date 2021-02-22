@@ -20,7 +20,7 @@ class RlBidAgent():
         #TODO change to read from config
         # timesteps #TODO change value
         self.T = 24
-        self.STATE_SIZE = 10 #tTODO
+        self.STATE_SIZE = 2 #tTODO
         # State:
         # Customer ID -- personlisation
         # Total number of orders for this customer
@@ -44,7 +44,7 @@ class RlBidAgent():
 
         # DQN Network to learn Q function
         #TODO
-        self.dqn_agent = Agent(state_size = 10, action_size = 10, seed =0)
+        self.dqn_agent = Agent(state_size = 2, action_size = 10, seed =0)
         # Reward Network to reward function
         #TODO
         self.reward_net = RewardNet(state_action_size = 10, reward_size = 1, seed =0 )
@@ -128,15 +128,15 @@ class RlBidAgent():
         Returns the state that will be used for the DQN state
         """
         #self.t_step,self.proposed_price, #self.customer_acceptance,
-        return np.asarray([ self.customer_id,
-                            self.orderentry_date,
-                            self.confirmed_delivery_date,
-                            self.customer_requestedLT,
-                            self.confirmed_orderLT,
+        return np.asarray([ #self.customer_id,
+                            #self.orderentry_date,
+                            #self.confirmed_delivery_date,
+                            #self.customer_requestedLT,
+                            #self.confirmed_orderLT,
                             self.order_quantity,
                             self.sales_product,
-                            self.order_importance,
-                            self.customer_sensitivity
+                            #self.order_importance,
+                            #self.customer_sensitivity
         ])
 
     def act(self, state, reward, cost):
