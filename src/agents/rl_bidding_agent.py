@@ -101,7 +101,7 @@ class RlBidAgent():
         """
         self.t_step += 1
         #TODO check the other fields
-        self.customer_acceptance  = self.wins_t / self.bids_t #equivalent to WR
+        #self.customer_acceptance  = self.wins_t / self.bids_t #equivalent to WR
 
     def _reset_step(self):
         """
