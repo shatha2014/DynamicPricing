@@ -189,7 +189,7 @@ class RlBidAgent():
             print("15")
             self.V += self.rewards_t
             print("16")
-            self.S.append(self.dqn_state, self.dqn_action)
+            self.S.append((self.dqn_state, self.dqn_action))
             print("17")
         # episode changes
         else:
