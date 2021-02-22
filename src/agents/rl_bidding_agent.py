@@ -148,24 +148,26 @@ class RlBidAgent():
         version of the bid price using DQN agent output
         """
 
-        print("1")
+        #print("1")
         self.bid_count += 1
         episode_done = (self.bid_count % 10 == 0) #each 10 requests ? #TODO
-        print("2")
+        #print("2")
 
         # Within the epsiode
         if not episode_done:
             self._update_step() #TODO  assuming that each request is a step
-            print("3")
+            #print("3")
             # sample a mini-batch and perform grad descent step
             self.reward_net.step()
-            print("4")
+            #print("4")
             dqn_next_state = self._get_state()
-            print("5")
+            #print("5")
             a_beta = self.dqn_agent.act(dqn_next_state, eps=self.eps) #TODO
-            print("6")
+            #print("6")
             sa = np.append(self.dqn_state, self.dqn_action)
-            print("7")
+            #print("7")
+            print("dqn state is {} and its shape is {}".format(self.dqn_state, self.dqn_state.shape))
+            print("dqn action is {} and its shape is {}".format(self.dqn_action, self.dqn_action.shape))
             rnet_r = float(self.reward_net.act(sa)) #state -- produce reward
             print("8")
             # call agent step
