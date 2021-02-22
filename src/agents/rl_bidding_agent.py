@@ -72,6 +72,7 @@ class RlBidAgent():
         self.order_importance = 0.0
         self.customer_sensitivity = 0.0
         self.bid_price = 0.0
+        self.reward_t = 0.0
 
 
     def _reset_episode(self):
