@@ -20,7 +20,7 @@ class RlBidAgent():
         #TODO change to read from config
         # timesteps #TODO change value
         self.T = 24
-        self.STATE_SIZE = 2 #tTODO
+        self.STATE_SIZE = 10 #tTODO
         # State:
         # Customer ID -- personlisation
         # Total number of orders for this customer
@@ -31,26 +31,25 @@ class RlBidAgent():
         # order importance
         # customer sensitivity
         # past order performance -- toDO
-        self.STATE_SIZE = 8
-        self.ACTION_SIZE = 2 #TODO
+        self.ACTION_SIZE = 10 #TODO
 
     def __init__(self):
         self.__load_config()
         # Control parameter used to scale bid price #TODO
-        self.BETA = []
-        self.eps_start = 0.0
-        self.eps_end = 0.0
-        self.anneal = 0.0
+        self.BETA = [0.1, 0.2,0.3, 0.4,0.5, 0.6, 0.7, 0.8, 0.9, 1.00]
+        self.eps_start = 0.1 #TODO
+        self.eps_end = 1.0 #TODO
+        self.anneal = 0.0 #TODO
         self._reset_episode()
 
         # DQN Network to learn Q function
         #TODO
-        self.dqn_agent = Agent(state_size = 8, action_size = 2, seed =0)
+        self.dqn_agent = Agent(state_size = 10, action_size = 10, seed =0)
         # Reward Network to reward function
         #TODO
-        self.reward_net = RewardNet(state_action_size = 8, reward_size = 1, seed =0 )
+        self.reward_net = RewardNet(state_action_size = 10, reward_size = 1, seed =0 )
         self.dqn_state = None
-        self.dqn_action = 0 #TODO
+        self.dqn_action = 1 #TODO
         self.dqn_reward = 0
         # Reward dictionary
         self.reward_dict = {}
@@ -72,6 +71,7 @@ class RlBidAgent():
         self.sales_product = 0.0
         self.order_importance = 0.0
         self.customer_sensitivity = 0.0
+        self.bid_price = 0.0
 
 
     def _reset_episode(self):
@@ -122,20 +122,20 @@ class RlBidAgent():
         self.bids_t += 1
         self.total_rewards += reward
 
-    def _get_state(self,state):
+    def _get_state(self):
         """
         Returns the state that will be used for the DQN state
         """
         #self.t_step,self.proposed_price, #self.customer_acceptance,
-        return np.asarray([ state['customer_id'],
-                            state['orderentry_date'],
-                            state['confirmed_delivery_date'],
-                            state['customer_requestedLT'],
-                            state['confirmed_orderLT'],
-                            state['order_quantity'],
-                            state['sales_product'],
-                            state['order_importance'],
-                            state['customer_sensitivity'],
+        return np.asarray([ self.customer_id,
+                            self.orderentry_date,
+                            self.confirmed_delivery_date,
+                            self.customer_requestedLT,
+                            self.confirmed_orderLT,
+                            self.order_quantity,
+                            self.sales_product,
+                            self.order_importance,
+                            self.customer_sensitivity,
                             self.reward_t
         ])
 
@@ -155,7 +155,7 @@ class RlBidAgent():
             self._update_step() #TODO  assuming that each request is a step
             # sample a mini-batch and perform grad descent step
             self.reward_net.step()
-            dqn_next_state = self._get_state(state)
+            dqn_next_state = self._get_state()
             a_beta = self.dqn_agent.act(dqn_next_state, eps=self.eps) #TODO
             sa = np.append(self.dqn_state, self.dqn_action)
             rnet_r = float(self.reward_net.act(sa)) #state -- produce reward
@@ -188,7 +188,7 @@ class RlBidAgent():
             self.wins_e += 1
             self.wins_t += 1
         # action - propose adjusted price or propose original price
-        action = self.dqn_action
+        action = self.dqn_action * (self.sales_product * self.order_quantity) + self.sales_product * self.order_quantity
         #TODO action space -- equal to the number of bids
         return action
 
