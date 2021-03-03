@@ -170,43 +170,43 @@ class RlBidAgent():
             print("dqn action is {}".format(self.dqn_action))
             print("sa is {}".format(sa))
             rnet_r = float(self.reward_net.act(sa)) #state -- produce reward
-            print("8")
+            #print("8")
             # call agent step
             self.dqn_agent.step(self.dqn_state, self.dqn_action, rnet_r, dqn_next_state, episode_done)
-            print("9")
+            #print("9")
             self.dqn_state = dqn_next_state
-            print("10")
+            #print("10")
             self.dqn_action = a_beta
-            print("11")
+            #print("11")
             print(dqn_next_state, a_beta)
-            print("12")
+            #print("12")
             self.lambda_param = self.BETA[a_beta]
-            print("13")
+            #print("13")
             #TODO
             self._reset_step()
-            print("14")
+            #print("14")
             self._update_reward_cost(reward, cost)
-            print("15")
+            #print("15")
             self.V += self.rewards_t
-            print("16")
+            #print("16")
             self.S.append((self.dqn_state, self.dqn_action))
-            print("17")
+            #print("17")
         # episode changes
         else:
-            print("18")
+            #print("18")
             for(s, a) in self.S:
                 sa = tuple(np.append(s,a))
                 max_r= max(self.reward_net.get_from_M(sa), self.V)
                 self.reward_net.add_to_M(sa, max_r)
                 self.reward_net.add(sa, max_r)
-            print("19")
+            #print("19")
             print("Total Accepted Proposals won with Customer ={}".format(self.wins_e))
             self.total_wins += self.wins_e
-            print("20")
+            #print("20")
             self._reset_episode()
-            print("21")
+            #print("21")
             self._update_reward_cost(reward,cost)
-            print("22")
+            #print("22")
 
         # action --> bid amount
         # Should be computed using a formula
@@ -214,11 +214,11 @@ class RlBidAgent():
         if reward > 0: #cost from previous step
             self.wins_e += 1
             self.wins_t += 1
-        print("23")
+        #print("23")
         # action - propose adjusted price or propose original price
         #TODO: Get their values from the state
         action = self.lambda_param * (state["sales_product"] * state["order_quantity"]) + state["sales_product"] * state["order_quantity"]
-        print("24")
+        #print("24")
         #TODO action space -- equal to the number of bids
         return action
 

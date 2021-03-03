@@ -109,33 +109,33 @@ class Agent():
         Q_targets = rewards + (gamma * Q_target_next * (1- dones))
 
         # Get expected Q values from local model
-        print("states : ")
-        print(states)
-        print(states.dtype)
-        print("actions: ")
-        print(actions)
-        print(actions.dtype)
+        #print("states : ")
+        #print(states)
+        #print(states.dtype)
+        #print("actions: ")
+        #print(actions)
+        #print(actions.dtype)
         Q_expected = self.qnetwork_local(states).gather(1, actions.long())
-        print("Q_expected type ")
-        print(Q_expected.dtype)
-        print("Q_targets type ")
-        print(Q_targets.dtype)
+        #print("Q_expected type ")
+        #print(Q_expected.dtype)
+        #print("Q_targets type ")
+        #print(Q_targets.dtype)
 
         # Compute the loss
         loss = F.mse_loss(Q_expected, Q_targets)
-        print("DQN loss = {}".format(loss))
+        #print("DQN loss = {}".format(loss))
         # Minimise the loss
 
         self.optimizer.zero_grad()
-        print("after optimizer zero grad")
+        #print("after optimizer zero grad")
         loss.backward()
-        print("loss backward")
+        #print("loss backward")
         self.optimizer.step()
-        print("after optimiser step ")
+        #print("after optimiser step ")
 
         # Update target network
         self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)
-        print("after soft update")
+        #print("after soft update")
 
 
     def soft_update(self, local_model, target_model, tau):
