@@ -111,8 +111,10 @@ class Agent():
         # Get expected Q values from local model
         print("states : ")
         print(states)
+        print(states.dtype)
         print("actions: ")
         print(actions)
+        print(actions.dtype)
         Q_expected = self.qnetwork_local(states).gather(1, actions)
 
         # Compute the loss
