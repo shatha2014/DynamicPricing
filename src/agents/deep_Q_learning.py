@@ -116,6 +116,10 @@ class Agent():
         print(actions)
         print(actions.dtype)
         Q_expected = self.qnetwork_local(states.double()).gather(1, actions)
+        print("Q_expected type ")
+        print(Q_expected.dtype)
+        print("Q_targets type ")
+        print(Q_targets.dtype)
 
         # Compute the loss
         loss = F.mse_loss(Q_expected, Q_targets)
