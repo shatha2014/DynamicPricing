@@ -22,7 +22,7 @@ LR = 1e-3 #learning rate
 UPDATE_EVERY = 4 # how often to update the target network
 
 # run on GPU or CPU
-device = torch.device("cudo:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Agent():
     """
