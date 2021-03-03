@@ -80,7 +80,7 @@ class Agent():
         :param eps: float - epsilon value (epsilon greedy action selection)
         :return: Returns actions for given state as per current policy
         """
-        state = torch.from_numpy(state).float().unsqueeze(0).to(device)
+        state = torch.from_numpy(state).double().unsqueeze(0).to(device)
         self.qnetwork_local.eval()
         with torch.no_grad():
             action_values = self.qnetwork_local(state)
