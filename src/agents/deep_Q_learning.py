@@ -80,7 +80,7 @@ class Agent():
         :param eps: float - epsilon value (epsilon greedy action selection)
         :return: Returns actions for given state as per current policy
         """
-        state = torch.from_numpy(state).double().unsqueeze(0).to(device)
+        state = torch.from_numpy(state).float64().unsqueeze(0).to(device)
         self.qnetwork_local.eval()
         with torch.no_grad():
             action_values = self.qnetwork_local(state)
@@ -172,11 +172,11 @@ class ReplayBuffer():
         k = min(self.batch_size, len(self.memory))
         experiences = random.sample(self.memory, k=k)
 
-        states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).double().to(device)
-        actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).double().to(device)
-        rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).double().to(device)
-        next_states = torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).double().to(device)
-        dones = torch.from_numpy(np.vstack([e.done for e in experiences if e is not None])).double().to(device)
+        states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float64().to(device)
+        actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).float64().to(device)
+        rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float64().to(device)
+        next_states = torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float64().to(device)
+        dones = torch.from_numpy(np.vstack([e.done for e in experiences if e is not None])).float64().to(device)
 
         return (states, actions, rewards, next_states, dones)
 
