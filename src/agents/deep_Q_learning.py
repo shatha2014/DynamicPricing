@@ -150,7 +150,8 @@ class Agent():
 
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             #target_param.data.copy(tau*local_param.data + (1.0*tau)* target_param.data)
-            target_param.clone(tau*local_param.data + (1.0*tau)* target_param.data)
+            cloned = (tau*local_param.data + (1.0*tau)* target_param.data).clone()
+            target_param.data = cloned
 
 class ReplayBuffer():
     """ Fixed size buffer to store experience tuples
