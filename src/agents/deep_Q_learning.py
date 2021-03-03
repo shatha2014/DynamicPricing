@@ -125,12 +125,17 @@ class Agent():
         loss = F.mse_loss(Q_expected, Q_targets)
         print("DQN loss = {}".format(loss))
         # Minimise the loss
+
         self.optimizer.zero_grad()
+        print("after optimizer zero grad")
         loss.backward()
+        print("loss backward")
         self.optimizer.step()
+        print("after optimiser step ")
 
         # Update target network
         self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)
+        print("after soft update")
 
 
     def soft_update(self, local_model, target_model, tau):
