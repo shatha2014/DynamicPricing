@@ -70,6 +70,8 @@ class PricingAuctions(gym.Env):
     self.bidprice_rl = bid_req['bid_price_rl']
     self.customer_acceptedprice = bid_req['customer_accepted_price']
     self.customer_sensitivity = bid_req['customer_sensitivity']
+    self.sales_product = bid_req['sales_product']
+    self.order_quantity = bid_req['order_quantity']
 
   def reset(self):
     """
