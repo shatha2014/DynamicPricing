@@ -66,7 +66,7 @@ class RewardNet():
             self.learn(experiences)
 
     def act(self, state_action):
-        sa = torch.from_numpy(state_action).double().unsqueeze(0).to(device)
+        sa = torch.from_numpy(state_action).float().unsqueeze(0).to(device)
         # self.reward_net.eval()
         # with torch.no_grad():
         #   action_values = self.reward_net(state)
@@ -120,8 +120,8 @@ class ReplayBuffer:
         k = min(self.batch_size, len(self.memory))
         experiences = random.sample(self.memory, k=k)
 
-        state_actions = torch.from_numpy(np.vstack([e.state_action for e in experiences if e is not None])).float64().to(device)
-        rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float64().to(device)
+        state_actions = torch.from_numpy(np.vstack([e.state_action for e in experiences if e is not None])).float().to(device)
+        rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(device)
 
         return (state_actions, rewards)
 
