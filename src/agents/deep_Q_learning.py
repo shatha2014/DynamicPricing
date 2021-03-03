@@ -115,7 +115,7 @@ class Agent():
         print("actions: ")
         print(actions)
         print(actions.dtype)
-        Q_expected = self.qnetwork_local(states.double()).gather(1, actions)
+        Q_expected = self.qnetwork_local(states.double()).gather(1, actions.double())
         print("Q_expected type ")
         print(Q_expected.dtype)
         print("Q_targets type ")
