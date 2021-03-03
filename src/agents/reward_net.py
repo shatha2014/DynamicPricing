@@ -66,7 +66,7 @@ class RewardNet():
             self.learn(experiences)
 
     def act(self, state_action):
-        sa = torch.from_numpy(state_action).float().unsqueeze(0).to(device)
+        sa = torch.from_numpy(state_action).double().unsqueeze(0).to(device)
         # self.reward_net.eval()
         # with torch.no_grad():
         #   action_values = self.reward_net(state)
