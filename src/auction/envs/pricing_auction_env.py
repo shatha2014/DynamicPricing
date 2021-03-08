@@ -72,6 +72,8 @@ class PricingAuctions(gym.Env):
     self.customer_sensitivity = bid_req['customer_sensitivity']
     self.sales_product = bid_req['sales_product']
     self.order_quantity = bid_req['order_quantity']
+    self.orderentry_date = bid_req['orderentry_date']
+    self.confirmed_delivery_date = bid_req['confirmed_delivery_date']
 
   def reset(self):
     """
