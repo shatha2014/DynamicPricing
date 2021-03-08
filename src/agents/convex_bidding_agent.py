@@ -23,9 +23,10 @@ class ConvexBiddingAgent():
         # Step 1: Calculate number of days between order entry date and
         # confirmed delivery date
         confirmed_lead_time = state['confirmed_orderLT']
+        original_price = state['order_quantity'] * state['sales_product']
         order_length_days = self.days_between(state['orderentry_date'], state['confirmed_delivery_date']) + confirmed_lead_time
         percentage = order_length_days/confirmed_lead_time
-        price_premium = math.log2(percentage) * 0.5
+        price_premium = math.log2(percentage) * 0.5 * original_price
 
 
         action = price_premium
