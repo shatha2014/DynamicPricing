@@ -3,7 +3,7 @@ from datetime import datetime
 
 """
 Concave Pricing Strategy
-Formula - Price Premium =  log(order duration after
+Formula - Price Premium =  log((standard delivery time - confirmed lead time/standard delivery time) *100) * 0.5 * original price
 """
 class ConcaveBiddingAgent():
 
