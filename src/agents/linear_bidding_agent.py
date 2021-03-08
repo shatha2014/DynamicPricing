@@ -49,7 +49,7 @@ class LinearBiddingAgent():
     return action
 
   def done(self):
-    return self.budget <= self.budget_spend
+    return self.bid_count < 7000
 
   def days_between(self,d1, d2):
     d1 = datetime.strptime(d1, "%m.%Y")
