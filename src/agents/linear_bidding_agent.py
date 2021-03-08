@@ -52,7 +52,7 @@ class LinearBiddingAgent():
     return self.budget <= self.budget_spend
 
   def days_between(self,d1, d2):
-    d1 = datetime.strptime(d1, "%m-%Y")
-    d2 = datetime.strptime(d2, "%m-%Y")
+    d1 = datetime.strptime(d1, "%m.%Y")
+    d2 = datetime.strptime(d2, "%m.%Y")
     return abs((d2 - d1).days)
 
