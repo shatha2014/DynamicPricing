@@ -3,7 +3,7 @@ from datetime import datetime
 
 """
 Concave Pricing Strategy
-Formula - Price Premium =  log(order duration after 
+Formula - Price Premium =  log(order duration after
 """
 class ConcaveBiddingAgent():
 
@@ -28,7 +28,7 @@ class ConcaveBiddingAgent():
         order_length_days = self.days_between(state['orderentry_date'], state['confirmed_delivery_date']) + confirmed_lead_time
         original_price = state['order_quantity'] * state['sales_product']
         percentage = confirmed_lead_time/order_length_days
-        price_premimum = (math.log10(percentage * 100) * 0.5) * original_price
+        price_premimum = (math.log2(percentage * 100) * 0.5) * original_price
 
         action = price_premimum
 
