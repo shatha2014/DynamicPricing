@@ -30,12 +30,21 @@ class LinearBiddingAgent():
     # Step 1: Calculate number of days between order entry date and
     # confirmed delivery date
     order_length_days = self.days_between(state['orderentry_date'], state['confirmed_delivery_date'])
+    print("order entry date is {}".format(state['orderentry_date']))
+    print("confirmed delivery date is {}".format(state['confirmed_delivery_date']))
+    print("order length in days is {}".format(order_length_days))
     confirmed_lead_time = state['confirmed_orderLT']
+    print("confirmed lead time is {}".format(confirmed_lead_time))
     original_price = state['order_quantity'] * state['sales_product']
+    print("original price is {}".format(original_price))
     maximum_price = original_price * 2
+    print("maximum price is {}".format(maximum_price))
     percentage = confirmed_lead_time/order_length_days
+    print("percentage is {}".format(percentage))
     calculated_price = max( ((1+ percentage) * original_price) , original_price)
-    price_premimum = min(calculated_price, original_price)
+    print("calculated price is {}".format(calculated_price))
+    price_premimum = min(calculated_price, maximum_price)
+    print("price premium is {}".format(price_premimum))
 
     action = price_premimum
 
