@@ -30,7 +30,10 @@ class ConcaveBiddingAgent():
         percentage = confirmed_lead_time/order_length_days
         print("order length days is {}".format(order_length_days))
         print("confirmed lead time is {}".format(confirmed_lead_time))
-        price_premimum = (math.log2(percentage * 100) * 0.5) * original_price
+        if confirmed_lead_time > 0:
+            price_premimum = (math.log2(percentage * 100) * 0.5) * original_price
+        else:
+            price_premimum = original_price
 
         action = price_premimum
 
