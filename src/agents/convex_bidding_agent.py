@@ -26,6 +26,7 @@ class ConvexBiddingAgent():
         original_price = state['order_quantity'] * state['sales_product']
         order_length_days = self.days_between(state['orderentry_date'], state['confirmed_delivery_date']) + confirmed_lead_time
         percentage = order_length_days/confirmed_lead_time
+        print("percentage is {}".format(percentage))
         price_premium = math.log2(percentage) * 0.5 * original_price
 
 
